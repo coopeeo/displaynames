@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_OSX_ARCHITECTURES "x86_64")
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 project(DisplayNames VERSION 1.0.0)
 
-if(${GEODE_TARGET_PLATFORM} STREQUAL "iOS")
+if("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS")
   message(STATUS "building for ios :3")
   unset(CMAKE_OSX_ARCHITECTURES)
   set(CMAKE_OSX_ARCHITECTURES arm64)
@@ -14,9 +14,8 @@ if(${GEODE_TARGET_PLATFORM} STREQUAL "iOS")
   set(CMAKE_SYSTEM_NAME "iOS")
 endif()
 
-file(GLOB SOURCES
+file(GLOB_RECURSE SOURCES
 	src/*.cpp
-  !src/old/*.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
@@ -29,4 +28,4 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-setup_geode_mod(${PROJECT_NAME} EXTERNALS geode.node-ids:1.7.1)
+setup_geode_mod(${PROJECT_NAME})
